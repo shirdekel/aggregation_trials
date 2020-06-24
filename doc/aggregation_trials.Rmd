@@ -1,0 +1,68 @@
+---
+title             : "Aggregation trial analysis"
+shorttitle        : ""
+
+note              : Created `r format(Sys.time())`
+
+author: 
+  - name          : "Shir Dekel"
+  
+floatsintext      : yes
+
+bibliography      : '`r system.file("refs.bib", package = "shiR")`'
+csl               : '`r system.file("apa.csl", package = "shiR")`'
+documentclass     : "apa7"
+classoption       : "man, donotrepeattitle"
+output: 
+  papaja::apa6_pdf:
+    includes: 
+      in_header: "preamble.tex"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+loadd(lm_separate_trial_awareness_apa)
+loadd(lm_separate_trial_awareness_ss_apa)
+```
+
+# Full results
+
+The aggregation experiment includes a series of 10 separate investment decisions, and subsequently, 10 decisions presented on the same page (joint). Figure\ \@ref(fig:plot-full) shows proportions of project acceptance across all conditions and trials.
+
+```{r plot-full, fig.cap = "Proportion of project acceptance in the separate presentation condition, by trial, and similarity, awareness, and presentation conditions. The smoothing over trials is done using LOESS, and the shading represents 95% confidence intervals."}
+readd(plot_full)
+```
+
+# Results of interest
+
+The key findings seem to be in the separate presentation. As Figure\ \@ref(fig:plot-separate-trial-awareness) and Table\ \@ref(tab:separate-trial-awareness-tab) shows, in the separate condition people are more likely to accept projects over the 10 trials in the separate presentation, but this interacts with awareness. Specifically, the relationship between choice and trial is significant in the aware condition, `r lm_separate_trial_awareness_ss_apa$Aware`; but not in the naive condition, `r lm_separate_trial_awareness_ss_apa$Naive`.
+
+```{r plot-separate-trial-awareness, fig.cap = "Proportion of project acceptance in the separate presentation condition, by trial and awareness conditions. The smoothing over trials is done using LOESS, and the shading represents 95% confidence intervals."}
+readd(plot_separate_trial_awareness)
+```
+
+```{r separate-trial-awareness-tab}
+lm_separate_trial_awareness_apa$table %>% 
+  apa_table(caption = "Logistic regression of project acceptance by order and awareness.")
+```
+
+# Auto-correlations
+
+A lag-1 auto-correlation calculates the correlation between a certain trial (usually a time point in time series data), and the trial before it. This is a measure of how dependent a series is on its past. For our purposes, a positive lag-1 autocorrelation would indicate more influence of bracketing, while a negative value would indicate more influence of diversification. Figures\ \@ref(fig:acf-separate-low),\ \@ref(fig:acf-separate-high),\ \@ref(fig:acf-joint-low), and\ \@ref(fig:acf-joint-high) show the auto-correlations for the presentation and similarity conditions for the different lags. Looking only at lag-1, it seems as though for the separate presentation, both similarity conditions have positive lag-1 values, indicating bracketing. In the joint presentation, however, the values indicate a preference for bracketing in the low similarity condition, and a preference for diversification in the high similarity condition. However, I'm not yet sure how to compare these values statistically, so can not yet say whether these are significant.
+
+```{r acf-separate-low, fig.cap = "Autocorrelations of project acceptance proportions across trials, for the separate presentation low similarity condition. The dashed blue lines represent the 95% CIs from zero."}
+readd(acf_separate_low)
+```
+
+```{r acf-separate-high, fig.cap = "Autocorrelations of project acceptance proportions across trials, for the separate presentation high similarity condition. The dashed blue lines represent the 95% CIs from zero."}
+readd(acf_separate_high)
+```
+
+```{r acf-joint-low, fig.cap = "Autocorrelations of project acceptance proportions across trials, for the joint presentation low similarity condition. The dashed blue lines represent the 95% CIs from zero."}
+readd(acf_joint_low)
+```
+
+```{r acf-joint-high, fig.cap = "Autocorrelations of project acceptance proportions across trials, for the joint presentation high similarity condition. The dashed blue lines represent the 95% CIs from zero."}
+readd(acf_joint_high)
+```
+
