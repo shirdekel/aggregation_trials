@@ -13,6 +13,12 @@ the_plan <-
     acf_separate_high = get_acf(data, "separate", "High"),
     acf_joint_low = get_acf(data, "joint", "Low"),
     acf_joint_high = get_acf(data, "joint", "High"),
+    data_lag1 = get_data_lag1(data),
+    anova_lag1 = get_anova_lag1(data_lag1),
+    anova_lag1_apa = apa_print(anova_lag1, es = "pes") %>%
+      .[["table"]],
+    plot_lag1 = get_plot_lag1(data_lag1),
+    lag1_distinct = get_lag1_distinct(),
     article = target(
       command = {
         render(knitr_in("doc/aggregation_trials.Rmd"))

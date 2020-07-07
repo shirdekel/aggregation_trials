@@ -23,6 +23,8 @@ output:
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 loadd(lm_separate_trial_awareness_apa)
 loadd(lm_separate_trial_awareness_ss_apa)
+loadd(anova_lag1_apa)
+loadd(lag1_distinct)
 ```
 
 # Full results
@@ -64,5 +66,29 @@ readd(acf_joint_low)
 
 ```{r acf-joint-high, fig.cap = "Autocorrelations of project acceptance proportions across trials, for the joint presentation high similarity condition. The dashed blue lines represent the 95% CIs from zero."}
 readd(acf_joint_high)
+```
+
+## Subject-level analysis
+
+The above lag-1 analyses were done on the proportions of project acceptance for each condition. That is, the auto-correlation function was applied to a vector of length 10, whose values represented the project acceptance proportions for for a certain condition for each trial order. However, it would probably be more nuanced to calculate the lag-1 auto-correlation for each participant individually, and then analyse across the data using those values. 
+
+Figure\ \@ref(fig:plot-lag1) shows these data and Table\ \@ref(tab:anova-lag1) shows the ANOVA results. Doesn't seems as if there are any effects. Can it be that there is a difference in lag-1 auto-correlations between low and high awareness in the joint presentation when analysing the proportions of project acceptance by group (as above), but not when analysing the data by participant (as in this section)? 55 participants were removed from the analysis because their lag-1 auto-correlation was infinite. This was because most (54/55) rejected all 10 gambles (one participant accepted all 10 gambles). Could this have influenced the results? Is there any way to get around this?
+
+```{r plot-lag1, fig.cap = "Lag-1 auto-correlation by awareness, similarity, and presentation conditions"}
+readd(plot_lag1)
+```
+
+```{r anova-lag1}
+anova_lag1_apa %>% 
+  apa_table(caption = "ANOVA table for lag-1 auto-correlations by awareness, similarity, and presentation conditions")
+```
+
+## Limits of the lag-1 values
+
+I generated all possible sequences of a vector of 10 made up of ones and zeros (1024 combinations) and calculated the lag-1 values for each. Table\ \@ref(tab:lag1-distinct) shows the 34 unique lag-1 auto-correlations of that complete set, to get a sense of the kinds of values different sequences give. Overall it seems to make sense, with 0101010101 having the minimum value (-0.9) and 0000011111 having the maximum (non-infinite) value (0.7). But some values make less sense, such as 1111111110 having a lag-1 value of -0.01. So maybe this measure isn't doing what we assume it's doing. Are there other ways of measuring diversity of a set that I can use to confirm these results?
+
+```{r lag1-distinct}
+lag1_distinct %>% 
+  apa_table(caption = "Sequences of 10-vector ones and zeros that correspond with the unique lag-1 auto-correlation values", longtable = TRUE)
 ```
 
