@@ -19,6 +19,7 @@ the_plan <-
       .[["table"]],
     plot_lag1 = get_plot_lag1(data_lag1),
     lag1_distinct = get_lag1_distinct(),
+    na_count = get_na_count(data_lag1),
     article = target(
       command = {
         render(knitr_in("doc/aggregation_trials.Rmd"))

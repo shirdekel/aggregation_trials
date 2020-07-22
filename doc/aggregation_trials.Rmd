@@ -25,6 +25,7 @@ loadd(lm_separate_trial_awareness_apa)
 loadd(lm_separate_trial_awareness_ss_apa)
 loadd(anova_lag1_apa)
 loadd(lag1_distinct)
+loadd(na_count)
 ```
 
 # Full results
@@ -90,5 +91,12 @@ I generated all possible sequences of a vector of 10 made up of ones and zeros (
 ```{r lag1-distinct}
 lag1_distinct %>% 
   apa_table(caption = "Sequences of 10-vector ones and zeros that correspond with the unique lag-1 auto-correlation values", longtable = TRUE)
+```
+
+Also note, the number of removed values (due to being infinite) was different between conditions (see Table\ \@ref(tab:na-count)). The awareness conditions seem to show the largest disparity.
+
+```{r na-count}
+na_count %>% 
+  apa_table(caption = "Number of removed values due to being all 1s or 0s.")
 ```
 
